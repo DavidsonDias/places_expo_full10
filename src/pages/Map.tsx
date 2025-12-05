@@ -1,13 +1,16 @@
 import React from 'react'
-import MapView from 'react-native-maps'
+import MapView, { LongPressEvent } from 'react-native-maps'
 import { Alert, StyleSheet, View } from 'react-native'
 import {
     getCurrentPositionAsync,
     LocationObject,
     requestForegroundPermissionsAsync
 } from 'expo-location'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
 
 export default function App() {
+
+    const navigation = useNavigation<NavigationProp<any>>()
 
     const [location, setLocation] = React.useState<LocationObject | undefined>(undefined)
 
@@ -23,6 +26,10 @@ export default function App() {
         })
     }, [])
 
+    function goToPlace(event: LongPressEvent) {
+        navigation.navigate('Place', event.nativeEvent.coordinate)
+    }
+
     return (
         <View style={styles.container}>
             <MapView
@@ -33,7 +40,7 @@ export default function App() {
                     center: location.coords,
                     heading: 0, pitch: 0, zoom: 15,
                 }}
-                onLongPress={(event) => Alert.alert('Aqui')}
+                onLongPress={goToPlace}
             />
         </View>
     )

@@ -3,4 +3,5 @@ export interface Place {
     longitude: number;
     name: string;
     description?: string;
+    imageUri: string;
 }
